@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.smart.dao.UserDao">
+    <resultMap id="userResultMapper" type="com.smart.domain.User">
+        <id column="userId" property="userId"/>
+        <result column="password" property="password"/>
+        <result column="loginName" property="loginName"/>
+        <result column="username" property="username"/>
+        <result column="sex" property="sex"/>
+        <result column="phone" property="phone"/>
+        <result column="address" property="address"/>
+        <!--多名学生对应一个班级-->
+        <association property="aClass" column="class_id" javaType="com.smart.domain.Class">
+            <id column="classId" property="classId"/>
+            <result column="className" property="className"/>
+            <result column="classDept" property="classDept"/>
+        </association>
+
+        <association property="role" column="role_id" javaType="com.smart.domain.Role">
+            <id column="roleId" property="roleId"/>
+            <result column="roleName" property="roleName"/>
+        </association>
+    </resultMap>
+    <!--查询登入用户-->
+    <select id="findUserLogin" resultMap="userResultMapper">
+         select* from tb_user u,tb_class tc  where u.class_id=tc.classId and loginname=#{loginname} and password=#{password}
+    </select>
+    <!--查询所有用户-->
+    <select id="findAllUser" resultMap="userResultMapper">
+      select* from tb_user u,tb_class tc  where u.class_id=tc.classId
+    </select>
+    <!--通过ID查询用户-->
+    <select id="selectUserById" parameterType="int" resultMap="userResultMapper">
+      select*  from tb_user u,tb_class tc  where u.class_id=tc.classId and u.userId=#{id}
+    </select>
+    <!--新增一名用户-->
+    <insert id="insertUser"  parameterType="user">
+        insert into tb_user(loginName,password,username,sex,phone,address,class_id)  values (#{loginName},#{password},#{username},#{sex},#{phone},#{address},#{aClass.classId})
+    </insert>
+    <!--删除一名用户-->
+    <delete id="deleteUser" parameterType="int">
+        delete from tb_user where userId=#{id}
+    </delete>
+    <!--修改一名用户-->
+    <update id="updateUser" parameterType="user">
+       update  tb_user set loginName=#{loginName},password=#{password},username=#{username},sex=#{sex},phone=#{phone},address=#{address},class_id=#{aClass.classId}
+       where userId=#{userId}
+    </update>
+    
+    <!--通过username查询用户-->
+    <select id="findUserByloginname" parameterType="String" resultMap="userResultMapper">
+        select  * from tb_user u,tb_role r where r.roleId=u.role_id and  loginName=#{loginName}
+    </select>
+    <!--通过loginname查询角色-->
+    <select id="findRoleByloginname" parameterType="String" resultType="role">
+        select  * from tb_user u,tb_role r where r.roleId=u.role_id and  loginName=#{loginName}
+    </select>
+    <!--通过loginname查询权限-->
+    <select id="findPermissionByloginname" parameterType="String" resultType="permission">
+                select  * from tb_user u,tb_role r ,tb_permission p where r.roleId=u.role_id and  p.role_id=r.roleId and loginName=#{loginName}
+    </select>
+
+</mapper>

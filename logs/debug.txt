@@ -1,0 +1,3 @@
+2019-05-26 14:33:25,423 INFO [main] org.springframework.context.support.AbstractApplicationContext.prepareRefresh(578) | Refreshing org.springframework.context.support.ClassPathXmlApplicationContext@7f416310: startup date [Sun May 26 14:33:25 CST 2019]; root of context hierarchy
+2019-05-26 14:33:25,642 INFO [main] org.springframework.beans.factory.xml.XmlBeanDefinitionReader.loadBeanDefinitions(317) | Loading XML bean definitions from class path resource [applicationContext.xml]
+2019-05-26 14:33:27,530 INFO [main] org.springframework.core.io.support.PropertiesLoaderSupport.loadProperties(172) | Loading properties file from class path resource [db.properties]

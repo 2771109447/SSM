@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:util="http://www.springframework.org/schema/util"
+
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                           http://www.springframework.org/schema/beans/spring-beans.xsd
+                           http://www.springframework.org/schema/context
+                           http://www.springframework.org/schema/context/spring-context-4.2.xsd
+                           http://www.springframework.org/schema/mvc
+                           http://www.springframework.org/schema/mvc/spring-mvc-4.2.xsd
+                           http://www.springframework.org/schema/util
+                           http://www.springframework.org/schema/util/spring-util.xsd">
+    <!--扫描控制包，使控制类注解生效-->
+    <context:component-scan base-package="com.smart.web"/>
+
+    <!--产生默认的DefaultAnnotationHandler（处理映射器）和RequestMapHandlerAdapter(处理器适配器)-->
+    <mvc:annotation-driven/>
+
+    <!--处理器适配器-->
+    <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter"
+          p:messageConverters-ref="messageConverters"/>
+    <!--定义消息转换接口-->
+    <util:list id="messageConverters">
+        <bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter"/>
+    </util:list>
+
+    <!--视图解析器-->
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver"
+          p:prefix="/WEB-INF/jsp/"
+          p:suffix=".jsp"
+    />
+
+    <!--通过服务器默认的Servlet拦截静态资源请求-->
+    <mvc:default-servlet-handler/>
+
+    <!--配置拦截器-->
+    <!--
+      <mvc:interceptors>
+          <mvc:interceptor>
+
+              <mvc:mapping path="/**" />
+              <mvc:exclude-mapping path="/users/login"/>
+              <mvc:exclude-mapping path="/loginForm"/>
+              //************
+            <mvc:mapping path="/books/"/>
+            <bean class="com.smart.interceptor.LoginInterceptor"/>
+        </mvc:interceptor>
+    </mvc:interceptors>
+-->
+
+</beans>
